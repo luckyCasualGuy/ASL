@@ -11,6 +11,8 @@ mp_holistic = mp.solutions.holistic
 from shutil import move
 
 class Writer:
+    temp_path = ''
+
     def write_to_csv(self, result: ndarray, out_csv: str):
         out_csv = Path(out_csv)
 
@@ -18,12 +20,12 @@ class Writer:
             csv_writer = writer(csv)
             csv_writer.writerow(result)
 
-    def write_as_video(self, array: ndarray, out_video: str, frame_rate=30):
-        fourcc = VideoWriter_fourcc(*'RGBA')
-        # frame_size = array.shape[1:3][::-1]
-        frame_size = array.shape[1:3]
-        print(frame_size)
-        return VideoWriter(out_video, fourcc, frame_rate, frame_size)
+    def write_as_video(self, path, image):
+        if self.temp_path != path: 
+            self.temp_path = path
+            self.writer = VideoWriter(path, VideoWriter_fourcc('M','J','P','G'), 30, (640, 480))
+
+        self.writer.write(image)
 
 
 class ImageHandler:

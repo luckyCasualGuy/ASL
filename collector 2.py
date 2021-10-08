@@ -1,5 +1,5 @@
 from cv2 import VideoCapture, waitKey, imshow, cvtColor, flip, COLOR_BGR2RGB, COLOR_RGB2BGR, putText, FONT_HERSHEY_SIMPLEX, resize, rectangle, line
-from numpy import ndarray, array
+from numpy import asscalar, ndarray, array
 from pathlib import Path
 from shutil import rmtree
 
@@ -15,7 +15,14 @@ me = MediapipeExtractor()
 w = Writer()
 im = ImageHandler()
 
-out_dir = Path('can')
+root = Path('can')
+out_dir = root / 'csv'
+out_vid_dir = root / 'video'
+
+if root.exists(): rmtree(root)
+root.mkdir()
+if out_vid_dir.exists(): rmtree(out_vid_dir)
+out_vid_dir.mkdir()
 if out_dir.exists(): rmtree(out_dir)
 out_dir.mkdir()
 
@@ -74,7 +81,9 @@ with mp_holistic.Holistic(
             image = im.draw_results(image, results)
 
             landmarks = me.extract_landmarks(results)
-            w.write_to_csv(landmarks, out_dir /  f'{out_prefix}_{video_count}.csv')
+            w.write_to_csv(landmarks, out_dir / f'{out_prefix}_{video_count}.csv')
+            w.write_as_video(str(out_dir / f'{out_prefix}_{video_count}.avi'))
+
 
             frame_count -= 1
             if not frame_count: 
@@ -89,7 +98,9 @@ with mp_holistic.Holistic(
             if not wait_count:
                 wait_count = 200
                 wait_flag = False
+
                 video_count -= 1
+
                 if video_count == 0: break
             
             text = "Waiting"
