@@ -7,6 +7,7 @@ from cv2 import VideoWriter_fourcc, VideoWriter
 import mediapipe as mp
 mp_drawing = mp.solutions.drawing_utils
 mp_holistic = mp.solutions.holistic
+mp_drawing_styles = mp.solutions.drawing_styles
 
 from shutil import move
 
@@ -30,7 +31,7 @@ class ImageHandler:
     def draw_results(self, image, results):
         image.flags.writeable = True
 
-        mp_drawing.draw_landmarks(image, results.face_landmarks, mp_holistic.FACE_CONNECTIONS)
+        mp_drawing.draw_landmarks(image, results.face_landmarks, mp_holistic.FACEMESH_CONTOURS, landmark_drawing_spec=None, connection_drawing_spec=mp_drawing_styles.get_default_face_mesh_contours_style())
         mp_drawing.draw_landmarks(image, results.left_hand_landmarks, mp_holistic.HAND_CONNECTIONS)
         mp_drawing.draw_landmarks(image, results.right_hand_landmarks, mp_holistic.HAND_CONNECTIONS)
         mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_holistic.POSE_CONNECTIONS)
