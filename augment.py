@@ -28,17 +28,18 @@ random.seed(1)
 from ASL_UTILS.collection import Writer
 vr = Writer()
 
-aug_size_per_class = 200
+aug_size_per_class = 10
 
-source = ""
-out = ""
+source = r"C:/Users/monac/Documents/GitHub/ASL/datasets/recorded"
+out = r"C:/Users/monac/Documents/GitHub/ASL/datasets/augmented"
 
-classes = ["can", "before"]
-print(classes)
 source_ds = Path(source)
+aug_ds = Path(out)
+
 classes = list(x.name for x in source_ds.glob('*'))
 print(classes)
-aug_ds = Path(out)
+
+print(source_ds.exists(),  aug_ds.exists())
 
 all_source_ds = []
 for category in classes:
@@ -65,13 +66,11 @@ for i in range(len(classes)):
         seq = va.Sequential([va.RandomTranslate(int(video_shape[1]/4),50), va.RandomShear(0.07,0.07)])
 
         video_aug = seq(video_frames)
-        aug_vid_name = f"{aug_ds}/{category}/{random.randint(100000,999999)}.mp4"
-        print(aug_vid_name, type(aug_vid_name))
-        print('saving')
+        aug_vid_name = aug_ds/category/f"{random.randint(100000,999999)}.avi"
         for aug_frame in video_aug:
             vr.write_as_video(aug_vid_name, aug_frame)
-        # skvideo.io.vwrite(aug_vid_name, video_aug)
-        # print("class:",counter_class,"||","vidno:",counter_vid,"/",aug_size_per_class,"||","filename:",aug_vid_name)
+            
+        print("class:",counter_class,"||","vidno:",counter_vid,"/",aug_size_per_class,"||","filename:",aug_vid_name)
         counter_vid -=1
 
     counter_class -=1
