@@ -15,7 +15,10 @@ me = MediapipeExtractor()
 w = Writer()
 im = ImageHandler()
 
-root = Path('can')
+klass = 'can'
+out_prefix = klass
+
+root = Path(klass)
 out_dir = root / 'csv'
 out_vid_dir = root / 'video'
 
@@ -26,8 +29,6 @@ out_vid_dir.mkdir()
 if out_dir.exists(): rmtree(out_dir)
 out_dir.mkdir()
 
-out_prefix = 'can'
-klass = 'can'
 frame_count = 70
 video_count = 31
 
@@ -66,6 +67,8 @@ with mp_holistic.Holistic(
 
         if not success: continue
 
+        image = resize(image, (640, 480))
+
         original = image.copy()
 
         image = flip(image, 1)
@@ -82,7 +85,7 @@ with mp_holistic.Holistic(
 
             landmarks = me.extract_landmarks(results)
             w.write_to_csv(landmarks, out_dir / f'{out_prefix}_{video_count}.csv')
-            w.write_as_video(str(out_dir / f'{out_prefix}_{video_count}.avi'))
+            w.write_as_video(str(out_vid_dir / f'{out_prefix}_{video_count}.avi'), original)
 
 
             frame_count -= 1

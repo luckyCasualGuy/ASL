@@ -24,7 +24,7 @@ class Writer:
     def write_as_video(self, path, image):
         if self.temp_path != path: 
             self.temp_path = path
-            self.writer = VideoWriter(path, VideoWriter_fourcc('M','J','P','G'), 30, (640, 480))
+            self.writer = VideoWriter(path, VideoWriter_fourcc('M','J','P','G'), 10, (640, 480))
 
         self.writer.write(image)
 
