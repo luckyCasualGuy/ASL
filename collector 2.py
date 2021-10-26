@@ -29,7 +29,9 @@ out_vid_dir.mkdir()
 if out_dir.exists(): rmtree(out_dir)
 out_dir.mkdir()
 
-frame_count = 70
+out_prefix = 'can'
+klass = 'can'
+frame_count = 50
 video_count = 31
 
 wait_flag = True
@@ -61,7 +63,6 @@ with mp_holistic.Holistic(
 ) as holistic:
 
     while cap.isOpened():
-        
         image: ndarray
         success, image = cap.read()
 
@@ -69,6 +70,8 @@ with mp_holistic.Holistic(
 
         original = image.copy()
         
+        image = resize(image, (640, 480))
+
         image = resize(image, (640, 480))
 
         image = flip(image, 1)
