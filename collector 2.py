@@ -15,7 +15,7 @@ me = MediapipeExtractor()
 w = Writer()
 im = ImageHandler()
 
-klass = 'can'
+klass = 'hi' # <-------------- 
 out_prefix = klass
 
 root = Path(klass)
@@ -33,7 +33,7 @@ frame_count = 70
 video_count = 31
 
 wait_flag = True
-wait_count = 150
+wait_count = 30
 count_flag = False
 
 width = 640
@@ -67,9 +67,9 @@ with mp_holistic.Holistic(
 
         if not success: continue
 
-        image = resize(image, (640, 480))
-
         original = image.copy()
+        
+        image = resize(image, (640, 480))
 
         image = flip(image, 1)
 
@@ -91,7 +91,7 @@ with mp_holistic.Holistic(
             frame_count -= 1
             if not frame_count: 
                 wait_flag = True
-                frame_count = 70
+                frame_count = 50
 
             text = f"Taking video {video_count}"
 
@@ -99,7 +99,7 @@ with mp_holistic.Holistic(
 
             wait_count -= 1
             if not wait_count:
-                wait_count = 200
+                wait_count = 30
                 wait_flag = False
 
                 video_count -= 1
@@ -123,7 +123,7 @@ with mp_holistic.Holistic(
         original = rectangle(original, fpoint1, fpoint2, (92, 206, 17), 2)
 
         if video_count == 1:
-            image = putText(image, 'LAST VIDEO' if frame_count != 70 else 'COMPLETE', (520, 150), FONT_HERSHEY_SIMPLEX, 1, (13,219,255), 2)
+            image = putText(image, 'LAST VIDEO' if frame_count != 50 else 'COMPLETE', (520, 150), FONT_HERSHEY_SIMPLEX, 1, (13,219,255), 2)
             
         imshow('out', image)
         imshow('original', original)

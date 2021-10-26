@@ -21,7 +21,6 @@
 
 from pathlib import Path
 from vidaug import augmentors as va
-import skvideo.io
 import cv2
 import random
 random.seed(1)
@@ -68,8 +67,8 @@ for i in range(len(classes)):
         video_aug = seq(video_frames)
         aug_vid_name = aug_ds/category/f"{random.randint(100000,999999)}.avi"
         for aug_frame in video_aug:
-            vr.write_as_video(aug_vid_name, aug_frame)
-            
+            vr.write_as_video(str(aug_vid_name), aug_frame)
+
         print("class:",counter_class,"||","vidno:",counter_vid,"/",aug_size_per_class,"||","filename:",aug_vid_name)
         counter_vid -=1
 
