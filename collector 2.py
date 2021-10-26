@@ -28,7 +28,7 @@ out_dir.mkdir()
 
 out_prefix = 'can'
 klass = 'can'
-frame_count = 70
+frame_count = 50
 video_count = 31
 
 wait_flag = True
@@ -60,13 +60,14 @@ with mp_holistic.Holistic(
 ) as holistic:
 
     while cap.isOpened():
-        
         image: ndarray
         success, image = cap.read()
 
         if not success: continue
 
         original = image.copy()
+
+        image = resize(image, (640, 480))
 
         image = flip(image, 1)
 
@@ -96,7 +97,7 @@ with mp_holistic.Holistic(
 
             wait_count -= 1
             if not wait_count:
-                wait_count = 200
+                wait_count = 30
                 wait_flag = False
 
                 video_count -= 1
